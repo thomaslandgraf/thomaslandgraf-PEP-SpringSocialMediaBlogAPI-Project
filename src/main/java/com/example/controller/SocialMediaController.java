@@ -2,6 +2,7 @@ package com.example.controller;
 
 import java.util.Optional;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.function.EntityResponse;
 
 import com.example.entity.Account;
+import com.example.entity.Message;
 import com.example.service.AccountService;
 import com.example.service.MessageService;
 
@@ -60,5 +62,19 @@ public class SocialMediaController {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
     
+  }
+
+  @PostMapping(value = "/messages")
+  public ResponseEntity<Message> insertMessage(@RequestBody Message message){
+    try {
+
+      Message messageAdded = messageService.insertMessage(message);
+
+      return ResponseEntity.status(HttpStatus.OK).body(messageAdded);
+
+    } catch (IllegalArgumentException e) {
+
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
   }
 }
