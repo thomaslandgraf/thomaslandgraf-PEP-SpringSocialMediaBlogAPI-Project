@@ -1,16 +1,18 @@
 package com.example.controller;
 
+import java.util.List;
 import java.util.Optional;
 
-import org.apache.catalina.connector.Response;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.websocket.server.PathParam;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.function.EntityResponse;
 
 import com.example.entity.Account;
 import com.example.entity.Message;
@@ -75,6 +77,33 @@ public class SocialMediaController {
     } catch (IllegalArgumentException e) {
 
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+  }
+
+  @GetMapping(value = "/messages")
+  public ResponseEntity<List<Message>> getAllMessages(){
+    List<Message> messagesList = messageService.getAllMessages();
+    return ResponseEntity.status(HttpStatus.OK).body(messagesList);
+  }
+
+  @GetMapping(value = "/messages/{messageId}")
+  public ResponseEntity<Message> getMessageById(@PathVariable int messageId){
+    Optional<Message> message = messageService.getMessageById(messageId);
+
+    if(message.isPresent()){
+      return ResponseEntity.ok().body(message.get());
+    } else {
+      return ResponseEntity.ok().build();
+    }
+  }
+
+  @DeleteMapping(value = "/messages/{messageId}")
+  public ResponseEntity<Integer> deleteMessageById(@PathVariable int messageId){
+    Integer numberOfDeletedRecord = messageService.deleteMessageById(messageId);
+    if(numberOfDeletedRecord == 1){
+      return ResponseEntity.ok().body(numberOfDeletedRecord);
+    } else {
+      return ResponseEntity.ok().build();
     }
   }
 }
