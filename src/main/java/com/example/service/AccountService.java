@@ -32,4 +32,17 @@ public class AccountService {
     
     return accountRepository.save(account);
   }
+
+  public Account accountLogin(Account account){
+    Optional<Account> accountFound = accountRepository.findByUsername(account.getUsername());
+
+    if(accountFound.isPresent()){
+      Account dataBaseAccount = accountFound.get();
+
+      if(dataBaseAccount.getPassword().equals(account.getPassword())){
+        return dataBaseAccount;
+      }
+    }
+    throw new IllegalArgumentException("Invalid username or password");
+  }
 }

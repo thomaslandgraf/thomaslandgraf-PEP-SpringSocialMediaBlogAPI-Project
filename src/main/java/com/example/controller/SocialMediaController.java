@@ -1,5 +1,7 @@
 package com.example.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +46,18 @@ public class SocialMediaController {
     } catch (IllegalStateException e){
 
       return ResponseEntity.status(HttpStatus.CONFLICT).build();
+    }
+  }
+
+  @PostMapping(value = "/login")
+  public ResponseEntity<Account> accountLogin(@RequestBody Account account){
+    try{
+      Account authenticatedAccount = accountService.accountLogin(account);
+
+      return ResponseEntity.status(HttpStatus.OK).body(authenticatedAccount);
+
+    } catch (IllegalArgumentException e) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
     
   }
