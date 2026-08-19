@@ -52,4 +52,21 @@ public class MessageService {
 
     return null;
   }
+
+  public Integer updateMessageById(Integer id, Message message){
+    if(message.getMessageText() == null || message.getMessageText().trim().isEmpty() || message.getMessageText().length() > 255){
+      return null;
+    }
+   
+    Optional<Message> optionalMessage = messageRepository.findById(id);
+
+    if(optionalMessage.isPresent()){
+      Message updateMessage = optionalMessage.get();
+      updateMessage.setMessageText(message.getMessageText());
+      messageRepository.save(updateMessage);
+      return 1;
+    }
+
+    return null;
+  }
 }

@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -104,6 +105,16 @@ public class SocialMediaController {
       return ResponseEntity.ok().body(numberOfDeletedRecord);
     } else {
       return ResponseEntity.ok().build();
+    }
+  }
+
+  @PatchMapping(value = "/messages/{messageId}")
+  public ResponseEntity<Integer> updateMessageById(@PathVariable int messageId, @RequestBody Message message){
+    Integer numberOfUpdatedRecord = messageService.updateMessageById(messageId, message);
+    if(numberOfUpdatedRecord == 1){
+      return ResponseEntity.ok().body(numberOfUpdatedRecord);
+    } else {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
   }
 }
