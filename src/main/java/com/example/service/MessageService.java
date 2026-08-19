@@ -66,7 +66,11 @@ public class MessageService {
       messageRepository.save(updateMessage);
       return 1;
     }
-
     return null;
+  }
+
+  public List<Message> messagesByPostedBy(int id){
+    List<Message> messagesList = messageRepository.findByPostedBy(id);
+    return messagesList;
   }
 }
