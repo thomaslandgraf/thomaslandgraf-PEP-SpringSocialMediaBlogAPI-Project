@@ -102,7 +102,7 @@ public class SocialMediaController {
   public ResponseEntity<Integer> deleteMessageById(@PathVariable int messageId){
     Integer numberOfDeletedRecord = messageService.deleteMessageById(messageId);
     if(numberOfDeletedRecord == 1){
-      return ResponseEntity.ok().body(numberOfDeletedRecord);
+      return ResponseEntity.status(HttpStatus.OK).body(numberOfDeletedRecord);
     } else {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
