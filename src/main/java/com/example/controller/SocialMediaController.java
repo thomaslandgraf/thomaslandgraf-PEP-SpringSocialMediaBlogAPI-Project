@@ -104,7 +104,7 @@ public class SocialMediaController {
     if(numberOfDeletedRecord == 1){
       return ResponseEntity.ok().body(numberOfDeletedRecord);
     } else {
-      return ResponseEntity.ok().build();
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
   }
 
