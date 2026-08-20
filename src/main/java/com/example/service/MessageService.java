@@ -55,7 +55,7 @@ public class MessageService {
 
   public Integer updateMessageById(Integer id, Message message){
     if(message.getMessageText() == null || message.getMessageText().trim().isEmpty() || message.getMessageText().length() > 255){
-      return null;
+      return 0;
     }
    
     Optional<Message> optionalMessage = messageRepository.findById(id);
@@ -66,7 +66,7 @@ public class MessageService {
       messageRepository.save(updateMessage);
       return 1;
     }
-    return null;
+    return 0;
   }
 
   public List<Message> messagesByPostedBy(int id){
