@@ -50,7 +50,7 @@ public class MessageService {
       return 1;
     }
 
-    return null;
+    return 0;
   }
 
   public Integer updateMessageById(Integer id, Message message){
