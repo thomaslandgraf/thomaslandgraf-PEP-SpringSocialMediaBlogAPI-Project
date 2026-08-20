@@ -21,7 +21,7 @@ public class AccountService {
       throw new IllegalArgumentException();
     }
 
-    if(account.getPassword().length() < 4){
+    if(account.getPassword() == null || account.getPassword().length() < 4){
       throw new IllegalArgumentException();
     }
 

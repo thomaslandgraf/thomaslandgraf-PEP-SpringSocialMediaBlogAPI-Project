@@ -42,7 +42,7 @@ public class SocialMediaController {
     try {
       Account accountAdded = accountService.insertAccount(account);
 
-      return ResponseEntity.status(HttpStatus.OK).body(accountAdded);
+      return ResponseEntity.ok().body(accountAdded);
     
     } catch (IllegalArgumentException e){
 
@@ -59,7 +59,7 @@ public class SocialMediaController {
     try{
       Account authenticatedAccount = accountService.accountLogin(account);
 
-      return ResponseEntity.status(HttpStatus.OK).body(authenticatedAccount);
+      return ResponseEntity.ok().body(authenticatedAccount);
 
     } catch (IllegalArgumentException e) {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -73,7 +73,7 @@ public class SocialMediaController {
 
       Message messageAdded = messageService.insertMessage(message);
 
-      return ResponseEntity.status(HttpStatus.OK).body(messageAdded);
+      return ResponseEntity.ok().body(messageAdded);
 
     } catch (IllegalArgumentException e) {
 
@@ -84,7 +84,7 @@ public class SocialMediaController {
   @GetMapping(value = "/messages")
   public ResponseEntity<List<Message>> getAllMessages(){
     List<Message> messagesList = messageService.getAllMessages();
-    return ResponseEntity.status(HttpStatus.OK).body(messagesList);
+    return ResponseEntity.ok().body(messagesList);
   }
 
   @GetMapping(value = "/messages/{messageId}")
@@ -102,7 +102,7 @@ public class SocialMediaController {
   public ResponseEntity<Integer> deleteMessageById(@PathVariable int messageId){
     Integer numberOfDeletedRecord = messageService.deleteMessageById(messageId);
     if(numberOfDeletedRecord == 1){
-      return ResponseEntity.status(HttpStatus.OK).body(numberOfDeletedRecord);
+      return ResponseEntity.ok().body(numberOfDeletedRecord);
     } else {
       return ResponseEntity.ok().build();
     }
