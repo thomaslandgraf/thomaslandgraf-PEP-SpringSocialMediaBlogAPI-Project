@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.example.entity.Message;
-import com.example.exception.ResourceNotFoundException;
+import com.example.exception.InvalidFieldException;
 import com.example.repository.AccountRepository;
 import com.example.repository.MessageRepository;
 
@@ -23,7 +23,7 @@ public class MessageService {
 
   public Message insertMessage(Message message){
     if(message.getMessageText() == null || message.getMessageText().length() > 255 || message.getMessageText().trim().isEmpty()){
-      throw new IllegalArgumentException();
+      throw new InvalidFieldException("Please check your input. Some required fields are blank or exceed the character limit.");
     }
 
     boolean userExist = accountRepository.existsById(message.getPostedBy());
@@ -32,7 +32,7 @@ public class MessageService {
       return messageRepository.save(message);
     }
 
-    throw new IllegalArgumentException();
+    throw new InvalidFieldException("Please check your input. Some required fields are blank or exceed the character limit.");
   }
 
   public List<Message> getAllMessages(){

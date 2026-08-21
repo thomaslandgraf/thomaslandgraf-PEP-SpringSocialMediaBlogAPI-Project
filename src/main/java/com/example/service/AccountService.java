@@ -7,6 +7,7 @@ import javax.naming.AuthenticationException;
 import org.springframework.stereotype.Service;
 
 import com.example.entity.Account;
+import com.example.exception.InvalidFieldException;
 import com.example.repository.AccountRepository;
 
 @Service
@@ -20,11 +21,11 @@ public class AccountService {
 
   public Account insertAccount(Account account){
     if(account.getUsername() == null || account.getUsername().trim().isEmpty()){
-      throw new IllegalArgumentException();
+      throw new InvalidFieldException("Please check your input. Some required fields are blank or null.");
     }
 
     if(account.getPassword() == null || account.getPassword().length() < 4){
-      throw new IllegalArgumentException();
+      throw new InvalidFieldException("Please check your input. Some required fields are blank, null.");
     }
 
     Optional<Account> accountExists = accountRepository.findByUsername(account.getUsername());
