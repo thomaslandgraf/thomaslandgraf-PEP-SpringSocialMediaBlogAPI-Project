@@ -39,9 +39,8 @@ public class MessageService {
     return messageRepository.findAll();
   }
 
-  public Message getMessageById(int id) throws ResourceNotFoundException {
-    return messageRepository.findById(id)
-    .orElseThrow(() -> new ResourceNotFoundException("Record not found."));
+  public Optional<Message> getMessageById(int id){
+    return messageRepository.findById(id);
   }
 
   public Integer deleteMessageById(int id){
