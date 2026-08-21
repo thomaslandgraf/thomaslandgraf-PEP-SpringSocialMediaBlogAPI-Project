@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.example.entity.Message;
+import com.example.exception.ResourceNotFoundException;
 import com.example.repository.AccountRepository;
 import com.example.repository.MessageRepository;
 
@@ -38,8 +39,9 @@ public class MessageService {
     return messageRepository.findAll();
   }
 
-  public Optional<Message> getMessageById(int id){
-    return messageRepository.findById(id);
+  public Message getMessageById(int id) throws ResourceNotFoundException {
+    return messageRepository.findById(id)
+    .orElseThrow(() -> new ResourceNotFoundException("Record not found."));
   }
 
   public Integer deleteMessageById(int id){

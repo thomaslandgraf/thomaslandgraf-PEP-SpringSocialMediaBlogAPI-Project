@@ -2,6 +2,8 @@ package com.example.service;
 
 import java.util.Optional;
 
+import javax.naming.AuthenticationException;
+
 import org.springframework.stereotype.Service;
 
 import com.example.entity.Account;
@@ -33,7 +35,7 @@ public class AccountService {
     return accountRepository.save(account);
   }
 
-  public Account accountLogin(Account account){
+  public Account accountLogin(Account account) throws AuthenticationException{
     Optional<Account> accountFound = accountRepository.findByUsername(account.getUsername());
 
     if(accountFound.isPresent()){
@@ -43,6 +45,6 @@ public class AccountService {
         return dataBaseAccount;
       }
     }
-    throw new IllegalArgumentException("Invalid username or password");
+    throw new AuthenticationException("Invalid username or password");
   }
 }

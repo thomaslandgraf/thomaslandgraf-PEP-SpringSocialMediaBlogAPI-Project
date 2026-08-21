@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-  @ExceptionHandler(CustomException.class)
-  public ResponseEntity<String> handleCustomException(CustomException e) {
+  @ExceptionHandler(ResourceNotFoundException.class)
+  public ResponseEntity<String> handleCustomException(ResourceNotFoundException e) {
 
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
   

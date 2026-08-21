@@ -3,6 +3,8 @@ package com.example.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.naming.AuthenticationException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -53,13 +55,13 @@ public class SocialMediaController {
   }
 
   @PostMapping(value = "/login")
-  public ResponseEntity<Account> accountLogin(@RequestBody Account account){
+  public ResponseEntity<Account> accountLogin(@RequestBody Account account) throws AuthenticationException{
     try{
       Account authenticatedAccount = accountService.accountLogin(account);
 
       return ResponseEntity.ok().body(authenticatedAccount);
 
-    } catch (IllegalArgumentException e) {
+    } catch (AuthenticationException e) {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
     
@@ -87,10 +89,10 @@ public class SocialMediaController {
 
   @GetMapping(value = "/messages/{messageId}")
   public ResponseEntity<Message> getMessageById(@PathVariable int messageId){
-    Optional<Message> message = messageService.getMessageById(messageId);
+    Message message = messageService.getMessageById(messageId);
 
-    if(message.isPresent()){
-      return ResponseEntity.ok().body(message.get());
+    if(message != null){
+      return ResponseEntity.ok().body(message);
     } else {
       return ResponseEntity.ok().build();
     }
