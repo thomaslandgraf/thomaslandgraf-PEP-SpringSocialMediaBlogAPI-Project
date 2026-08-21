@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.entity.Account;
 import com.example.entity.Message;
+import com.example.exception.InvalidFieldException;
 import com.example.service.AccountService;
 import com.example.service.MessageService;
 
@@ -44,7 +45,7 @@ public class SocialMediaController {
 
       return ResponseEntity.ok().body(accountAdded);
     
-    } catch (IllegalArgumentException e){
+    } catch (InvalidFieldException e){
 
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     
@@ -55,7 +56,7 @@ public class SocialMediaController {
   }
 
   @PostMapping(value = "/login")
-  public ResponseEntity<Account> accountLogin(@RequestBody Account account) throws AuthenticationException{
+  public ResponseEntity<Account> accountLogin(@RequestBody Account account){
     try{
       Account authenticatedAccount = accountService.accountLogin(account);
 

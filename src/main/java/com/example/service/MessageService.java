@@ -32,7 +32,7 @@ public class MessageService {
       return messageRepository.save(message);
     }
 
-    throw new InvalidFieldException("Please check your input. Some required fields are blank or exceed the character limit.");
+    throw new IllegalArgumentException();
   }
 
   public List<Message> getAllMessages(){

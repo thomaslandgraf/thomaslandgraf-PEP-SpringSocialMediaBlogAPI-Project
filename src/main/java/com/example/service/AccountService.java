@@ -30,7 +30,7 @@ public class AccountService {
 
     Optional<Account> accountExists = accountRepository.findByUsername(account.getUsername());
     if(accountExists.isPresent()){
-      throw new IllegalStateException();
+      throw new IllegalStateException("Account already exist.");
     }
     
     return accountRepository.save(account);
