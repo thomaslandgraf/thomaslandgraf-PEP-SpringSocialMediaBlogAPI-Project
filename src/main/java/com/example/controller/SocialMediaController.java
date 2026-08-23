@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.entity.Account;
 import com.example.entity.Message;
 import com.example.exception.InvalidFieldException;
+import com.example.exception.UnauthorizedException;
 import com.example.service.AccountService;
 import com.example.service.MessageService;
 
@@ -30,8 +31,8 @@ import com.example.service.MessageService;
 @RestController
 public class SocialMediaController {
 
-  private AccountService accountService;
-  private MessageService messageService;
+  private final AccountService accountService;
+  private final MessageService messageService;
 
   public SocialMediaController(AccountService accountService, MessageService messageService){
     this.accountService = accountService;
@@ -62,7 +63,7 @@ public class SocialMediaController {
 
       return ResponseEntity.ok().body(authenticatedAccount);
 
-    } catch (AuthenticationException e) {
+    } catch (UnauthorizedException e) {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
     
