@@ -3,9 +3,6 @@ package com.example.controller;
 import java.util.List;
 import java.util.Optional;
 
-import javax.naming.AuthenticationException;
-
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,9 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.entity.Account;
 import com.example.entity.Message;
-import com.example.exception.DuplicateUsernameException;
-import com.example.exception.InvalidFieldException;
-import com.example.exception.UnauthorizedException;
 import com.example.service.AccountService;
 import com.example.service.MessageService;
 
@@ -42,46 +36,20 @@ public class SocialMediaController {
 
   @PostMapping(value = "/register")
   public ResponseEntity<Account> insertAccount(@RequestBody Account account){
-    try {
-      Account accountAdded = accountService.insertAccount(account);
-
-      return ResponseEntity.ok().body(accountAdded);
-    
-    } catch (InvalidFieldException e){
-
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-    
-    } catch (DuplicateUsernameException e){
-
-      return ResponseEntity.status(HttpStatus.CONFLICT).build();
-    }
+    Account accountAdded = accountService.insertAccount(account);
+    return ResponseEntity.ok().body(accountAdded);
   }
 
   @PostMapping(value = "/login")
   public ResponseEntity<Account> accountLogin(@RequestBody Account account){
-    try{
-      Account authenticatedAccount = accountService.accountLogin(account);
-
-      return ResponseEntity.ok().body(authenticatedAccount);
-
-    } catch (UnauthorizedException e) {
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-    }
-    
+    Account authenticatedAccount = accountService.accountLogin(account);
+    return ResponseEntity.ok().body(authenticatedAccount);
   }
 
   @PostMapping(value = "/messages")
   public ResponseEntity<Message> insertMessage(@RequestBody Message message){
-    try {
-
       Message messageAdded = messageService.insertMessage(message);
-
       return ResponseEntity.ok().body(messageAdded);
-
-    } catch (IllegalArgumentException e) {
-
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-    }
   }
 
   @GetMapping(value = "/messages")
@@ -113,12 +81,8 @@ public class SocialMediaController {
 
   @PatchMapping(value = "/messages/{messageId}")
   public ResponseEntity<Integer> updateMessageById(@PathVariable int messageId, @RequestBody Message message){
-    Integer numberOfUpdatedRecord = messageService.updateMessageById(messageId, message);
-    if(numberOfUpdatedRecord == 1){
-      return ResponseEntity.ok().body(numberOfUpdatedRecord);
-    } else {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-    }
+    Integer messageUpdate = messageService.updateMessageById(messageId, message);
+    return ResponseEntity.ok().body(messageUpdate);
   }
 
   @GetMapping(value = "/accounts/{accountId}/messages")

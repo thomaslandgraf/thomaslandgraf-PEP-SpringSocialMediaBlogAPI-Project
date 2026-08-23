@@ -22,17 +22,14 @@ public class MessageService {
   }
 
   public Message insertMessage(Message message){
-    if(message.getMessageText() == null || message.getMessageText().length() > 255 || message.getMessageText().trim().isEmpty()){
+    if(hasInvalidMessageText(message)){
       throw new InvalidFieldException("Please check your input. Some required fields are blank or exceed the character limit.");
     }
-
     boolean userExist = accountRepository.existsById(message.getPostedBy());
-
-    if(userExist){
-      return messageRepository.save(message);
+    if(!userExist){
+      throw new InvalidFieldException("User not found.");
     }
-
-    throw new IllegalArgumentException();
+    return messageRepository.save(message);
   }
 
   public List<Message> getAllMessages(){
@@ -45,33 +42,34 @@ public class MessageService {
 
   public Integer deleteMessageById(int id){
     Optional<Message> message = messageRepository.findById(id);
-
     if(message.isPresent()){
       messageRepository.deleteById(id);
       return 1;
     }
-
     return 0;
   }
 
   public Integer updateMessageById(Integer id, Message message){
-    if(message.getMessageText() == null || message.getMessageText().trim().isEmpty() || message.getMessageText().length() > 255){
-      return 0;
+    if(hasInvalidMessageText(message)){
+      throw new InvalidFieldException("Please check your input. Some required fields are blank or exceed the character limit.");
     }
-   
     Optional<Message> optionalMessage = messageRepository.findById(id);
-
-    if(optionalMessage.isPresent()){
-      Message updateMessage = optionalMessage.get();
-      updateMessage.setMessageText(message.getMessageText());
-      messageRepository.save(updateMessage);
-      return 1;
+    if(!optionalMessage.isPresent()){
+      throw new InvalidFieldException("Message not found.");
     }
-    return 0;
+    Message updateMessage = optionalMessage.get();
+    updateMessage.setMessageText(message.getMessageText());
+    messageRepository.save(updateMessage);
+    return 1;
   }
 
   public List<Message> messagesByPostedBy(int id){
-    List<Message> messagesList = messageRepository.findByPostedBy(id);
-    return messagesList;
+    return messageRepository.findByPostedBy(id);
+  }
+
+  private boolean hasInvalidMessageText(Message message){
+    return message.getMessageText() == null 
+    || message.getMessageText().length() > 255 
+    || message.getMessageText().trim().isEmpty();
   }
 }

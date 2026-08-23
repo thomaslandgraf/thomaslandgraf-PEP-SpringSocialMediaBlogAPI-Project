@@ -2,8 +2,6 @@ package com.example.service;
 
 import java.util.Optional;
 
-import javax.naming.AuthenticationException;
-
 import org.springframework.stereotype.Service;
 
 import com.example.entity.Account;
