@@ -60,13 +60,9 @@ public class SocialMediaController {
 
   @GetMapping(value = "/messages/{messageId}")
   public ResponseEntity<Message> getMessageById(@PathVariable int messageId){
-    Optional<Message> message = messageService.getMessageById(messageId);
-
-    if(message.isPresent()){
-      return ResponseEntity.ok().body(message.get());
-    } else {
-      return ResponseEntity.ok().build();
-    }
+    return messageService.getMessageById(messageId)
+      .map(m -> ResponseEntity.ok().body(m))
+      .orElseGet(() -> ResponseEntity.ok().build());
   }
 
   @DeleteMapping(value = "/messages/{messageId}")
