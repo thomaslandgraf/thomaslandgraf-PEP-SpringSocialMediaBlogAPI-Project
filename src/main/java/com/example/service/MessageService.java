@@ -13,8 +13,8 @@ import com.example.repository.MessageRepository;
 @Service
 public class MessageService {
 
-  private MessageRepository messageRepository;
-  private AccountRepository accountRepository;
+  private final MessageRepository messageRepository;
+  private final AccountRepository accountRepository;
 
   public MessageService(MessageRepository messageRepository, AccountRepository accountRepository){
     this.messageRepository = messageRepository;

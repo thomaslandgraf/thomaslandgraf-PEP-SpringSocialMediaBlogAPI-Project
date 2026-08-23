@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.entity.Account;
 import com.example.entity.Message;
+import com.example.exception.DuplicateUsernameException;
 import com.example.exception.InvalidFieldException;
 import com.example.exception.UnauthorizedException;
 import com.example.service.AccountService;
@@ -50,7 +51,7 @@ public class SocialMediaController {
 
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     
-    } catch (IllegalStateException e){
+    } catch (DuplicateUsernameException e){
 
       return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
